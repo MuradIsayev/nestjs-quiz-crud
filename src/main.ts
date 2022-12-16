@@ -8,9 +8,11 @@ async function bootstrap() {
   const PORT: number = parseInt(process.env.PORT) || 3000;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useStaticAssets(resolve('./src/public'));
-  app.setBaseViewsDir(resolve('./src/views'));
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
+  const hbs = require('hbs');
+  hbs.registerPartials(resolve(__dirname, '..', 'views', 'partials'));
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

@@ -33,7 +33,7 @@ export class User {
   number_of_games_played: Number;
 
   @Column({ type: 'boolean', default: false })
-  isActive: boolean;
+  isAdmin: boolean;
 
   @CreateDateColumn()
   created_at: Date;

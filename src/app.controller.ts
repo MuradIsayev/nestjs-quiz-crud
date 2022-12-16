@@ -1,13 +1,12 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get,Render } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  @Render('login')
-  test() {
-    return { message: 'Testing MVC' };
+  @Get('header')
+  @Render('header')
+  root() {
+    console.log('GET Header page');
   }
 }

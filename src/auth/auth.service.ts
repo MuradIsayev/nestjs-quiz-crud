@@ -22,16 +22,12 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto) {
-    try {
-      const user = await this.usersService.findOneByEmail(loginDto.email);
-      const isMatch = await bcrypt.compare(loginDto.password, user.password);
-      if (!isMatch) throw new ForbiddenException('Password is incorrect!');
-      return {
-        access_token: this.jwtService.sign({ email: user.email, sub: user.id }),
-      };
-    } catch (error) {
-      throw error;
-    }
+    const user = await this.usersService.findOneByEmail(loginDto.email);
+    const isMatch = await bcrypt.compare(loginDto.password, user.password);
+    if (!isMatch) throw new ForbiddenException('Password is incorrect!');
+    return {
+      access_token: this.jwtService.sign({ email: user.email, sub: user.id }),
+    };
   }
 
   async register(createUserDto: CreateUserDto) {
@@ -43,7 +39,7 @@ export class AuthService {
       throw new MethodNotAllowedException(
         `User with email ${createUserDto.email} is already registered`,
       );
-        
+
     const user = this.usersRepository.create(createUserDto);
 
     if (!user) throw new BadRequestException('User could not be created');

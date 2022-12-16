@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet"> 
+        <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+      rel="stylesheet"
+    />
+    <title>Login</title>
+        <link rel="stylesheet" href="login-style.css" />
+    <link rel="stylesheet" href="header.css" />
+  </head>
+  <body>
+    {{> header }}
+    <main>
+    <form action="/auth/login" method="POST" class="decor">
+      <div class="form-left-decoration"></div>
+      <div class="form-right-decoration"></div>
+      <div class="circle"></div>
+      <div class="form-inner">
+        <h1>Login</h1>
+        <input
+          id="mail"
+          name="email"
+          type="email"
+          autocomplete="off"
+          placeholder="Email"
+          required
+        />
+        <input name="password" type="password" placeholder="Password" required />
+        <button class="login-button">Login</button>
+        <div class="already-account"><p class="already-account-text">Don't have an account?  <a class="already-account-link" href="/auth/signup"> Sign up</a></p></div>
+      </div>
+    </form>
+    </main>
+  </body>
+</html>
