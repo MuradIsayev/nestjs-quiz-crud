@@ -7,7 +7,7 @@ export class CorrectAnswer {
   id: number;
 
   @Column({ type: 'varchar', length: 64 })
-  correctAnswer: string;
+  correctAnswer: any;
 
   @ManyToMany(() => Quiz, (question) => question.correctAnswers)
   questions: Quiz[];

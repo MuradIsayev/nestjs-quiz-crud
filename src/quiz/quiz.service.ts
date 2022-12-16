@@ -31,8 +31,8 @@ export class QuizService {
       }
       const question = this.quizRepository.create({
         ...createQuizDto,
-        ...createQuizDto.correctNumberAnswers,
         type: questionType,
+        correctAnswers: createQuizDto.correctNumberAnswers,
       });
       return await this.quizRepository.save(question);
     } else if (createQuizDto.typeId === 2) {
@@ -43,18 +43,16 @@ export class QuizService {
       }
       const question = this.quizRepository.create({
         ...createQuizDto,
-        ...createQuizDto.correctBooleanAnswers,
+        correctAnswers: createQuizDto.correctBooleanAnswers,
         type: questionType,
       });
       return await this.quizRepository.save(question);
     } else if (createQuizDto.typeId === 3) {
       const question = this.quizRepository.create({
         ...createQuizDto,
-        ...createQuizDto.correctMCQAnswers,
         type: questionType,
+        correctAnswers: createQuizDto.correctMCQAnswers,
       });
-      console.log(question);
-      console.log(createQuizDto.correctMCQAnswers);
       return await this.quizRepository.save(question);
     } else if (createQuizDto.typeId === 4) {
       if (createQuizDto.correctTextAnswers.length > 1) {
@@ -64,7 +62,7 @@ export class QuizService {
       }
       const question = this.quizRepository.create({
         ...createQuizDto,
-        ...createQuizDto.correctTextAnswers,
+        correctAnswers: createQuizDto.correctTextAnswers,
         type: questionType,
       });
       return await this.quizRepository.save(question);
@@ -90,10 +88,51 @@ export class QuizService {
     const question = await this.findOneById(id);
     await this.answersRepository.remove(question.answers); // Remove the old answers
     await this.correctAnswerRepository.remove(question.correctAnswers);
-    Object.assign(question, { ...updateQuizDto, type: questionType });
-    return await this.quizRepository.save(question);
+    if (updateQuizDto.typeId === 1) {
+      if (updateQuizDto.correctNumberAnswers.length > 1) {
+        throw new BadRequestException(
+          'Only one correct answer is allowed for number question',
+        );
+      }
+      Object.assign(question, {
+        ...updateQuizDto,
+        correctAnswers: updateQuizDto.correctNumberAnswers,
+        type: questionType,
+      });
+      return await this.quizRepository.save(question);
+    } else if (updateQuizDto.typeId === 2) {
+      if (updateQuizDto.correctBooleanAnswers.length > 1) {
+        throw new BadRequestException(
+          'Only one correct answer is allowed for boolean question',
+        );
+      }
+      Object.assign(question, {
+        ...updateQuizDto,
+        correctAnswers: updateQuizDto.correctBooleanAnswers,
+        type: questionType,
+      });
+      return await this.quizRepository.save(question);
+    } else if (updateQuizDto.typeId === 3) {
+      Object.assign(question, {
+        ...updateQuizDto,
+        correctAnswers: updateQuizDto.correctMCQAnswers,
+        type: questionType,
+      });
+      return await this.quizRepository.save(question);
+    } else if (updateQuizDto.typeId === 4) {
+      if (updateQuizDto.correctTextAnswers.length > 1) {
+        throw new BadRequestException(
+          'Only one correct answer is allowed for text question',
+        );
+      }
+      Object.assign(question, {
+        ...updateQuizDto,
+        correctAnswers: updateQuizDto.correctTextAnswers,
+        type: questionType,
+      });
+      return await this.quizRepository.save(question);
+    }
   }
-
   async findOneById(id: number) {
     const question = await this.quizRepository.findOneBy({ id });
     if (!question) {

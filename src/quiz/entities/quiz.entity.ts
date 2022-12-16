@@ -46,5 +46,6 @@ export class Quiz {
     cascade: true,
   })
   @JoinTable()
+
   correctAnswers: CorrectAnswer[];
 }

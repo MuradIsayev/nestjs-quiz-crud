@@ -4,5 +4,5 @@ export class CreateCorrectMCQAnswerDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(64)
-  correctMCQAnswer: string;
+  correctAnswer: string;
 }
