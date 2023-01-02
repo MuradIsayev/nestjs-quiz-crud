@@ -6,9 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  Render,
   ParseIntPipe,
-  Res,
 } from '@nestjs/common';
 import { QuizService } from './quiz.service';
 import { CreateQuizDto } from './dto/create-quiz.dto';
@@ -19,12 +17,9 @@ export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
   // @UseGuards(JwtAuthGuard)
-  @Get('game')
-  @Render('game')
-  async game() {
-    console.log('GET Game page');
-    const questions = await this.quizService.findAll();
-    return { questions };
+  @Get('test')
+  getHello(): string {
+    return this.quizService.getHello();
   }
   @Post()
   create(@Body() createQuizDto: CreateQuizDto) {

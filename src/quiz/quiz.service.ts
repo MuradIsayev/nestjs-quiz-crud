@@ -17,6 +17,9 @@ export class QuizService {
     @InjectRepository(CorrectAnswer)
     private correctAnswerRepository: Repository<CorrectAnswer>,
   ) {}
+  getHello(): string {
+    return 'Hello World!';
+  }
 
   async create(createQuizDto: CreateQuizDto) {
     const questionType = await this.typeRepository.findOneBy({
@@ -143,6 +146,8 @@ export class QuizService {
 
   async remove(id: number) {
     const question = await this.findOneById(id);
+    await this.answersRepository.remove(question.answers);
+    await this.correctAnswerRepository.remove(question.correctAnswers);
     return await this.quizRepository.remove(question);
   }
 }

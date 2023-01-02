@@ -1,21 +1,13 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { join, resolve } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const PORT: number = parseInt(process.env.PORT) || 3000;
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');
-  const hbs = require('hbs');
-  hbs.registerPartials(resolve(__dirname, '..', 'views', 'partials'));
-
+  const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('/api');
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  const PORT = parseInt(process.env.PORT);
   await app.listen(PORT, () => console.log(` App is running on port ${PORT}`));
 }
 
